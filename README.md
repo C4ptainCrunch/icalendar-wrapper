@@ -31,8 +31,7 @@ open('mah_calendar.ics','w').write(str(calendar))
 calendar2 = ics.Calendar(open('mah_other_calendar.ics','r').readlines()
 calendar2.events[0].name = 'Change event name'
 open('mah_other_calendar.ics','w').write(str(calendar2))
-
-    ```
+```
 
 Limitations
 ---
