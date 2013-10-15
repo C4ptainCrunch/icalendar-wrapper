@@ -9,28 +9,28 @@ ics.py
 Usage
 ----
 
-    ```python
-    import ics
+```python
+import ics
 
-    calendar = ics.Calendar()
-    calendar.events # Return a list of ics.Events()
+calendar = ics.Calendar()
+calendar.events # Return a list of ics.Events()
 
-    event = calendar.add_event()
-    event.name = 'My cool hackathon'
-    event.start = start_time # Give a datetime or Arrow object
-    event.end = end_time # Give a datetime or Arrow object
+event = calendar.add_event()
+event.name = 'My cool hackathon'
+event.start = start_time # Give a datetime or Arrow object
+event.end = end_time # Give a datetime or Arrow object
 
-    # Lot of other properties avalable
+# Lot of other properties avalable
 
-    event2 = Event()
-    event2.name = 'My cool lan party'
-    calendar.add_event(event2)
+event2 = Event()
+event2.name = 'My cool lan party'
+calendar.add_event(event2)
 
-    open('mah_calendar.ics','w').write(str(calendar))
+open('mah_calendar.ics','w').write(str(calendar))
 
-    calendar2 = ics.Calendar(open('mah_other_calendar.ics','r').readlines()
-    calendar2.events[0].name = 'Change event name'
-    open('mah_other_calendar.ics','w').write(str(calendar2))
+calendar2 = ics.Calendar(open('mah_other_calendar.ics','r').readlines()
+calendar2.events[0].name = 'Change event name'
+open('mah_other_calendar.ics','w').write(str(calendar2))
 
     ```
 
