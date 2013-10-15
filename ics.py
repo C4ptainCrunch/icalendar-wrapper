@@ -35,6 +35,7 @@ class Calendar(object):
     def __repr__(self):
         return "<Calendar with {} events>".format(len(self.events()))
 
+    @property
     def events(self):
         walk = self.icalendar.walk()
         def ievent_to_event(ievent):
