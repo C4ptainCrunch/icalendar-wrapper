@@ -1,6 +1,4 @@
 import icalendar
-import pytz
-from datetime import datetime
 import arrow
 
 class Calendar(object):
@@ -11,8 +9,27 @@ class Calendar(object):
         else:
             self.icalendar = icalendar.Calendar.from_ical(from_string)
 
+        self.icalendar['VERSION'] = "2.0"
+
+    def _get_stripped_prop_or_none(self, property):
+        value = self.icalendar.get(property, None)
+        if value is None:
+            return None
+        return value.__str__().strip()
+
+    @property
+    def creator(self):
+        return self._get_stripped_prop_or_none('PRODID')
+
+    @creator.setter
+    def creator(self, value):
+        self.icalendar['PRODID'] = str(value)
+
 
     def __str__(self):
+        # TODO : should be moved to a 'pre_print' fn
+        if self.creator is None:
+            self.creator = 'ics.py//http://github.com/C4ptainCrunch/ics.py'
         return self.icalendar.to_ical()
 
     def __repr__(self):
@@ -28,11 +45,15 @@ class Calendar(object):
 
         return events
 
-    def add_event(self, event):
+    def add_event(self, event=None):
+        if event is None:
+            event = Event()
         assert type(event) is Event
 
         ievent =  event._ievent
         self.icalendar.add_component(ievent)
+
+        return event
 
 
 class Event(object):
@@ -88,12 +109,15 @@ class Event(object):
         self._ievent['LOCATION'] = str(value)
 
     @property
-    def category(self):
-        return self._get_stripped_prop_or_none('CATEGORIES')
+    def categories(self):
+        categories = self._ievent.get('CATEGORIES', [])
+        if not categories == []:
+            categories = map(lambda x: x.strip(), categories.split(','))
+        return categories
 
-    @category.setter
-    def category(self, value):
-        self._ievent['CATEGORIES'] = str(value)
+    @categories.setter
+    def categories(self, value):
+        self._ievent['CATEGORIES'] = ','.join(value)
 
     @property
     def status(self):
@@ -162,6 +186,3 @@ class Event(object):
 
     def __str__(self):
         return self._ievent.to_ical()
-
-
-
